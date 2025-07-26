@@ -2,6 +2,30 @@ const users = [];
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+const searchUser = async (req, res) => {
+  try {
+    const { name } = req.query;
+
+    if (!name) {
+      return res.status(400).json({ message: "İsim parametresi gerekli." });
+    }
+
+    const filtered = users.filter((c) =>
+      c.name.toLowerCase().includes(name.toLowerCase())
+    );
+
+    if (filtered.length === 0) {
+      return res.status(404).json({ message: "Bu filtreye uygun user yok..." });
+    }
+
+    return res.status(200).json(filtered);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+}
+
+
+
 const getAllUsers = async (req, res) => {
   try {
     if (users.length === 0) {
@@ -107,4 +131,4 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { getAllUsers, getUserById, register, login };
+module.exports = { searchUser, getAllUsers, getUserById, register, login };
