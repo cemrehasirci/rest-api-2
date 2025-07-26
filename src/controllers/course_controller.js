@@ -36,15 +36,15 @@ const getAllCourse = async (req, res) => {
 };
 
 const getCourseById = async (req, res) => {
-    const courseId = parseInt(req.params.id);
-    const course = courses.find(c => c.id === courseId);
+  const courseId = parseInt(req.params.id);
+  const course = courses.find((c) => c.id === courseId);
 
-    if(!course) {(404).json({ message: "Bu id ye ait kurs bulunamadı..."});
-    }
+  if (!course) {
+    return res.status(404).json({ message: "Bu id ye ait kurs bulunamadı..." });
+  }
 
-    return res.status(200).json(course);
-}
-
+  return res.status(200).json(course);
+};
 
 const createCourse = async (req, res) => {
   try {

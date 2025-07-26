@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { register, getAllUsers, login } = require('../controllers/auth_controller.js');
+const { register, getAllUsers, getUserById, login } = require('../controllers/auth_controller.js');
 
 router.get('/getAllUsers', getAllUsers);
+router.get('/getUser/:id', getUserById)
 router.post('/register', register);
 router.post('/login', login);
 

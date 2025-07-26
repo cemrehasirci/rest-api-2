@@ -15,6 +15,17 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+const getUserById = async (req, res) => {
+  const userId = parseInt(req.params.id);
+  const user = users.find((c) => c.id === userId);
+
+  if (!user) {
+    return res.status(404).json({ message: "Bu id ye ait user bulunamadı..." });
+  }
+
+  return res.status(200).json(user)
+};
+
 const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -79,12 +90,13 @@ const login = async (req, res) => {
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(401).json({ message: "Şifre hatalı tekrar deneyin..." });
+      return res
+        .status(401)
+        .json({ message: "Şifre hatalı tekrar deneyin..." });
     }
     const token = jwt.sign({ id: user.id }, process.env.SECRET_TOKEN, {
       expiresIn: "1h",
     });
-
 
     return res.status(200).json({
       message: "Giriş yapıldı :)",
@@ -95,4 +107,4 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, getAllUsers, login };
+module.exports = { getAllUsers, getUserById, register, login };
