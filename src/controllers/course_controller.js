@@ -26,7 +26,7 @@ const getAllCourse = async (req, res) => {
   try {
     if (courses.length === 0) {
       return res
-        .status(500)
+        .status(404)
         .json({ message: "Henüz bir kursumuz bulunmamakta..." });
     }
     res.status(200).json(courses);
