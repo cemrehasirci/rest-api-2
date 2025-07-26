@@ -49,11 +49,10 @@ const updateCourse = async (req, res) => {
     }
 
     if (name) course.name = name;
-    if (description) courses.description = description;
+    if (description) course.description = description;
     if (stock) course.stock = stock;
 
-    
-    res.status(200).json({ message: "Kurs düzenlendi :)" });
+    res.status(200).json({ message: "Kurs düzenlendi :)", updated: course });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -62,20 +61,23 @@ const updateCourse = async (req, res) => {
 const deleteCourse = async (req, res) => {
   try {
     const courseId = parseInt(req.params.id);
-    const { name, description, stock } = req.body;
+    const index = courses.findIndex((c) => c.id === courseId);
 
-    const course = courses.find((c) => c.id === courseId);
-    if (!course) {
+    if (index === -1) {
       return res
         .status(404)
         .json({ message: "Bu id'ye ait kurs bulunamadı..." });
     }
-    //const deletedCourse = courses.splice(index, 1);
+
+    const deletedCourse = courses.splice(index, 1);
+
     return res.status(200).json({
-      message: "Kurs silindi.",
-      //deleted: deletedCourse[0]
+      message: "Kurs silindi :)",
+      deleted: deletedCourse[0],
     });
-  } catch {}
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
 };
 
 module.exports = { getCourse, createCourse, updateCourse, deleteCourse };
