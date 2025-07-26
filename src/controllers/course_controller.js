@@ -1,5 +1,27 @@
 const courses = [];
 
+const searchCourse = async (req, res) => {
+  try {
+    const { name } = req.query;
+
+    if (!name) {
+      return res.status(400).json({ message: "İsim parametresi gerekli." });
+    }
+
+    const filtered = courses.filter((c) =>
+      c.name.toLowerCase().includes(name.toLowerCase())
+    );
+
+    if (filtered.length === 0) {
+      return res.status(404).json({ message: "Bu filtreye uygun kurs yok..." });
+    }
+
+    return res.status(200).json(filtered);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 const getCourse = async (req, res) => {
   try {
     if (courses.length === 0) {
@@ -80,4 +102,10 @@ const deleteCourse = async (req, res) => {
   }
 };
 
-module.exports = { getCourse, createCourse, updateCourse, deleteCourse };
+module.exports = {
+  getCourse,
+  createCourse,
+  updateCourse,
+  deleteCourse,
+  searchCourse,
+};
