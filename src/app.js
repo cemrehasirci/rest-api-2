@@ -11,8 +11,8 @@ const app = express();
 app.use(express.json());
 app.use(cors);
 
-//app.use('/', Auth);
 app.use('/', Course);
+//app.use('/', Auth);
 
 app.get('/', (req, res) => {
     return res.status(200).json({message: "OK"})

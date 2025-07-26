@@ -22,7 +22,7 @@ const searchCourse = async (req, res) => {
   }
 };
 
-const getCourse = async (req, res) => {
+const getAllCourse = async (req, res) => {
   try {
     if (courses.length === 0) {
       return res
@@ -34,6 +34,17 @@ const getCourse = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+const getCourseById = async (req, res) => {
+    const courseId = parseInt(req.params.id);
+    const course = courses.find(c => c.id === courseId);
+
+    if(!course) {(404).json({ message: "Bu id ye ait kurs bulunamadı..."});
+    }
+
+    return res.status(200).json(course);
+}
+
 
 const createCourse = async (req, res) => {
   try {
@@ -103,7 +114,8 @@ const deleteCourse = async (req, res) => {
 };
 
 module.exports = {
-  getCourse,
+  getAllCourse,
+  getCourseById,
   createCourse,
   updateCourse,
   deleteCourse,

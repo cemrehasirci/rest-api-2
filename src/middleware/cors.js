@@ -9,4 +9,5 @@ const corsOptions = {
     optionsSuccessStatus: 200
 };
 
+// fonksiyondakiler export
 module.exports = cors(corsOptions);   
