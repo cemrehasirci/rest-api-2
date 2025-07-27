@@ -22,6 +22,7 @@ const searchCourse = async (req, res) => {
   }
 };
 
+
 const getAllCourse = async (req, res) => {
   try {
     if (courses.length === 0) {
@@ -35,6 +36,7 @@ const getAllCourse = async (req, res) => {
   }
 };
 
+
 const getCourseById = async (req, res) => {
   const courseId = parseInt(req.params.id);
   const course = courses.find((c) => c.id === courseId);
@@ -45,6 +47,7 @@ const getCourseById = async (req, res) => {
 
   return res.status(200).json(course);
 };
+
 
 const createCourse = async (req, res) => {
   try {
@@ -69,6 +72,7 @@ const createCourse = async (req, res) => {
   }
 };
 
+
 const updateCourse = async (req, res) => {
   try {
     const courseId = parseInt(req.params.id);
@@ -91,6 +95,7 @@ const updateCourse = async (req, res) => {
   }
 };
 
+
 const deleteCourse = async (req, res) => {
   try {
     const courseId = parseInt(req.params.id);
@@ -112,6 +117,7 @@ const deleteCourse = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
 
 module.exports = {
   getAllCourse,

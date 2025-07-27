@@ -1,10 +1,20 @@
-const users = [];
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const users = [
+  {
+    id: 1,
+    name: "admin",
+    email: "admin@admin.com",
+    password: "$2b$12$TnKcUoZsDYCPy4S/j3iC2u4e.4H2OE5ehLZWSsXtZ2/xZy5Q5Z5QW", //admin123
+    role: "admin",
+  },
+];
+
 
 const searchUser = async (req, res) => {
   try {
     const { name } = req.query;
+    z;
 
     if (!name) {
       return res.status(400).json({ message: "İsim parametresi gerekli." });
@@ -22,8 +32,7 @@ const searchUser = async (req, res) => {
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
-}
-
+};
 
 
 const getAllUsers = async (req, res) => {
@@ -39,6 +48,7 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+
 const getUserById = async (req, res) => {
   const userId = parseInt(req.params.id);
   const user = users.find((c) => c.id === userId);
@@ -47,8 +57,9 @@ const getUserById = async (req, res) => {
     return res.status(404).json({ message: "Bu id ye ait user bulunamadı..." });
   }
 
-  return res.status(200).json(user)
+  return res.status(200).json(user);
 };
+
 
 const register = async (req, res) => {
   try {
@@ -79,6 +90,7 @@ const register = async (req, res) => {
       name,
       email,
       password: passwordHash,
+      role: "user",
     };
 
     const userToken = jwt.sign({ id: newUser.id }, process.env.SECRET_TOKEN, {
@@ -95,6 +107,7 @@ const register = async (req, res) => {
     return res.status(500).json(error.message);
   }
 };
+
 
 const login = async (req, res) => {
   try {
@@ -131,4 +144,91 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { searchUser, getAllUsers, getUserById, register, login };
+
+const deleteUser = async (req, res) => {
+  try {
+    const req_user = users.find((c) => c.id === req.user.id);
+    if (!req_user || req_user.role !== "admin") {
+      return res
+        .status(403)
+        .json({ message: "Sadece admin kullanıcı silebilir..." });
+    }
+
+    const userId = parseInt(req.params.id);
+    const index = users.findIndex((c) => c.id === userId);
+
+    if (index === -1) {
+      return res
+        .status(404)
+        .json({ message: "Bu id'ye ait kullanıcı bulunamadı..." });
+    }
+
+    if (userId === 1) {
+      return res
+        .status(403)
+        .json({ message: "Bu kullanıcı silinemez..." });
+    }
+
+    const deletedUser = users.splice(index, 1);
+
+    return res.status(200).json({
+      message: "Kullanıcı silindi :)",
+      deleted: deletedUser[0],
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+
+const changeRole = async (req, res) => {
+  try {
+    const req_user = users.find((c) => c.id === req.user.id);
+    if ( !req_user || req_user.role !== "admin" ) {
+      return res
+        .status(403)
+        .json({ message: "Sadece admin rol değiştirebilir..." });
+    }
+
+    const { newRole } = req.body;
+    const userId = parseInt(req.params.id);
+    const user = users.find((c) => c.id === userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "Bu id'de bir kullanıcı yok..." });
+    }
+
+    if (user.id === 1) {
+      return res
+        .status(403)
+        .json({ message: "Bu kullanıcının rolü değiştirilemez..." });
+    }
+
+    if (user.role === newRole) {
+      return res
+        .status(500)
+        .json({ message: "Kullanıcının rolünde bir değişiklik yapılmadı..." });
+    }
+
+    user.role = newRole;
+
+    return res.status(200).json({
+      message: "Kullanıcının rolü güncellendi :)",
+      user: user,
+    });
+
+  } catch (error) {
+    return res.status(500).json(error.message);
+  }
+};
+
+
+module.exports = {
+  searchUser,
+  getAllUsers,
+  getUserById,
+  register,
+  login,
+  deleteUser,
+  changeRole,
+};
