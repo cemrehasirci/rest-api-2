@@ -7,7 +7,7 @@ router.get('/getAllCourse', getAllCourse);
 router.get('/getCourse/:id', getCourseById );
 router.get('/searchCourse', searchCourse);
 router.post('/createCourse', auth, createCourse);
-router.patch('/updateCourse/:id', updateCourse);
-router.delete('/deleteCourse/:id', auth, deleteCourse)
+router.patch('/updateCourse/:id', auth, updateCourse);
+router.delete('/deleteCourse/:id', auth, deleteCourse);
 
 module.exports = router; 

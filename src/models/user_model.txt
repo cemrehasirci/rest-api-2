@@ -1,0 +1,6 @@
+auth :
+    id: integer,
+    name: String,
+    email: String,
+    password: String,
+    role: default user { or admin },

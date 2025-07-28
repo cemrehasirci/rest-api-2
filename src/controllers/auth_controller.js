@@ -14,7 +14,6 @@ const users = [
 const searchUser = async (req, res) => {
   try {
     const { name } = req.query;
-    z;
 
     if (!name) {
       return res.status(400).json({ message: "İsim parametresi gerekli." });
@@ -74,7 +73,7 @@ const register = async (req, res) => {
     if (password.length < n) {
       return res
         .status(400)
-        .json({ message: "Şifreniz 6 karakterden az olamaz..." });
+        .json({ message: `Şifreniz ${n} karakterden az olamaz...` });
     }
 
     const user = users.find((c) => c.email === email);
@@ -93,15 +92,10 @@ const register = async (req, res) => {
       role: "user",
     };
 
-    const userToken = jwt.sign({ id: newUser.id }, process.env.SECRET_TOKEN, {
-      expiresIn: "1h",
-    });
-
     users.push(newUser);
     return res.status(201).json({
       message: "Yeni kullanıcı oluşturuldu :)",
       newUser,
-      userToken,
     });
   } catch (error) {
     return res.status(500).json(error.message);
@@ -131,6 +125,7 @@ const login = async (req, res) => {
         .status(401)
         .json({ message: "Şifre hatalı tekrar deneyin..." });
     }
+
     const token = jwt.sign({ id: user.id }, process.env.SECRET_TOKEN, {
       expiresIn: "1h",
     });

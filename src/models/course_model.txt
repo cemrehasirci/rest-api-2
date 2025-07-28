@@ -1,0 +1,4 @@
+course :
+    name: String,
+    description: String,
+    stock: integer
