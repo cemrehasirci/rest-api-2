@@ -5,7 +5,7 @@ const users = [
     id: 1,
     name: "admin",
     email: "admin@admin.com",
-    password: "$2b$12$TnKcUoZsDYCPy4S/j3iC2u4e.4H2OE5ehLZWSsXtZ2/xZy5Q5Z5QW", //admin123
+    password: "$2b$12$l65NMs1XITu78k6dI5JRYe2Wv/pzgQXaV35XZ1X9aAy8/kGVtxicC", //admin123
     role: "admin",
   },
 ];
